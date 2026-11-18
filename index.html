@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patagonia Labs · Patagonia Browser</title>
+<meta name="description" content="Patagonia Labs: Patagonia Browser, el navegador rápido, simple y privado para la familia y el día a día. Para Windows y Android.">
+<meta name="author" content="Christian Ariel Williams">
+<meta name="theme-color" content="#2b2d5c">
+<meta property="og:title" content="Patagonia Browser · Patagonia Labs">
+<meta property="og:description" content="Navegá libre. Navegá seguro. Rápido, simple y privado, para Windows y Android.">
+<meta property="og:image" content="assets/patagonia-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/icono-192.png">
+<style>
+  :root{
+    --noche:#1b1a33; --violeta:#2b2d5c; --vino:#4a2027; --tierra:#7a3a3c;
+    --naranja:#ef7a4a; --durazno:#ffc07a; --crema:#fff4e8; --texto:#f6ece4; --suave:#d9c6c0;
+    --tarjeta:rgba(255,244,232,.06); --borde:rgba(255,244,232,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+       background:var(--noche);color:var(--texto);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--durazno)}
+  img{max-width:100%;display:block}
+  .ancho{max-width:1100px;margin:0 auto;padding:0 22px}
+
+  /* Barra */
+  header.barra{position:sticky;top:0;z-index:10;background:rgba(27,26,51,.82);backdrop-filter:blur(10px);
+       border-bottom:1px solid var(--borde)}
+  .barra .ancho{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--crema);font-weight:700;letter-spacing:.2px}
+  .marca img{width:32px;height:32px}
+  nav a{color:var(--suave);text-decoration:none;margin-left:22px;font-size:.95rem}
+  nav a:hover{color:var(--crema)}
+
+  /* Portada */
+  .portada{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden;
+       background:url(assets/fondo.svg) center bottom/cover no-repeat, var(--violeta)}
+  .portada::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(27,26,51,.15) 0%,rgba(27,26,51,0) 50%,var(--noche) 100%)}
+  .portada .ancho{position:relative;z-index:1;text-align:center;padding-top:40px;padding-bottom:120px}
+  .portada .icono{width:112px;height:112px;margin:0 auto 18px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
+  .portada .etiqueta{display:inline-block;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--durazno);margin-bottom:6px}
+  .portada h1{font-size:clamp(2.3rem,6vw,4rem);line-height:1.1;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+  .portada .lema{font-size:clamp(1.15rem,2.6vw,1.45rem);margin:12px 0 6px;color:var(--crema)}
+  .portada .bajada{max-width:640px;margin:0 auto 30px;color:var(--suave)}
+  .botones{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:14px;font-weight:600;
+       text-decoration:none;transition:transform .15s,box-shadow .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn svg{width:20px;height:20px;flex:none}
+  .btn-principal{background:linear-gradient(135deg,var(--durazno),var(--naranja));color:#2a1214;box-shadow:0 8px 24px rgba(239,122,74,.35)}
+  .btn-secundario{background:rgba(255,244,232,.1);color:var(--crema);border:1px solid rgba(255,244,232,.25)}
+  .version{margin-top:16px;font-size:.85rem;color:var(--suave)}
+
+  section{padding:80px 0}
+  h2{font-size:clamp(1.7rem,3.5vw,2.3rem);margin-bottom:10px}
+  .intro{color:var(--suave);max-width:680px;margin-bottom:40px}
+  .centro{text-align:center}.centro .intro{margin-left:auto;margin-right:auto}
+
+  /* Funciones */
+  .grilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+  .tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:18px;padding:24px}
+  .tarjeta .emoji{font-size:1.7rem;margin-bottom:10px}
+  .tarjeta h3{font-size:1.1rem;margin-bottom:6px;color:var(--crema)}
+  .tarjeta p{color:var(--suave);font-size:.96rem}
+
+  /* Capturas */
+  .capturas{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .capturas figure{border-radius:14px;overflow:hidden;border:1px solid var(--borde);background:#000;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+  .capturas figcaption{background:var(--vino);padding:10px 14px;font-size:.9rem;color:var(--suave)}
+
+  /* Descargas */
+  .descargas{background:linear-gradient(180deg,var(--noche),#26182a)}
+  .opciones{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .opcion{background:var(--tarjeta);border:1px solid var(--borde);border-radius:20px;padding:28px;display:flex;flex-direction:column}
+  .opcion.destacada{border-color:rgba(255,192,122,.55);box-shadow:0 0 0 1px rgba(255,192,122,.2) inset}
+  .opcion .tag{align-self:flex-start;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+       background:var(--durazno);color:#2a1214;padding:3px 10px;border-radius:99px;margin-bottom:12px}
+  .opcion h3{font-size:1.25rem;margin-bottom:4px}
+  .opcion .sub{color:var(--suave);font-size:.92rem;margin-bottom:16px}
+  .opcion ol{margin:0 0 20px 20px;color:var(--suave);font-size:.93rem}
+  .opcion ol li{margin-bottom:4px}
+  .opcion .btn{margin-top:auto;justify-content:center}
+  .nota{margin-top:26px;font-size:.88rem;color:var(--suave);text-align:center}
+
+  /* Principios */
+  .principios{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .principio{border-left:3px solid var(--naranja);padding:6px 0 6px 16px}
+  .principio strong{display:block;color:var(--crema)}
+  .principio span{color:var(--suave);font-size:.92rem}
+
+  /* Labs */
+  .labs{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+  .labs p{color:var(--suave);margin-bottom:14px}
+  .proximos{background:var(--tarjeta);border:1px dashed rgba(255,192,122,.45);border-radius:20px;padding:28px;text-align:center}
+  .proximos .emoji{font-size:2.2rem}
+  .proximos h3{margin:8px 0 6px}
+  .proximos p{color:var(--suave);font-size:.95rem;margin:0}
+
+  footer{border-top:1px solid var(--borde);padding:34px 0;color:var(--suave);font-size:.88rem}
+  footer .ancho{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;align-items:center}
+  footer .sinrastreo{display:flex;align-items:center;gap:8px}
+
+  @media (max-width:760px){
+    nav a:not(.nav-bajar){display:none}
+    .capturas,.labs{grid-template-columns:1fr}
+    section{padding:60px 0}
+    .portada{min-height:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="ancho">
+    <a class="marca" href="#inicio"><img src="assets/favicon-32.png" alt="" width="32" height="32">Patagonia Labs</a>
+    <nav>
+      <a href="#que-hace">Qué hace</a>
+      <a href="#principios">Principios</a>
+      <a href="#labs">Patagonia Labs</a>
+      <a class="nav-bajar" href="#descargar">Descargar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+<section class="portada">
+  <div class="ancho">
+    <img class="icono" src="assets/patagonia-icon.png" alt="Ícono de Patagonia Browser" width="112" height="112">
+    <span class="etiqueta">Patagonia Labs presenta</span>
+    <h1>Patagonia Browser</h1>
+    <p class="lema">Navegá libre. Navegá seguro.</p>
+    <p class="bajada">Rápido, simple y privado. El navegador para la familia y el día a día: entrás, encontrás lo que buscás y seguís con lo tuyo. Sin menús complicados ni funciones que nunca vas a usar.</p>
+    <div class="botones">
+      <a class="btn btn-principal" href="#descargar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Descargar gratis
+      </a>
+      <a class="btn btn-secundario" href="#que-hace">Ver qué hace</a>
+    </div>
+    <p class="version">Versión 1.4.0 «Patagonia te cuida» · Windows y Android · Gratis y de código abierto</p>
+  </div>
+</section>
+
+<section id="que-hace">
+  <div class="ancho">
+    <h2>Te cuida sin que tengas que hacer nada</h2>
+    <p class="intro">Todo viene activado de fábrica y funciona en tu propio equipo. Lo que hacés en internet no se manda a ningún lado.</p>
+    <div class="grilla">
+      <div class="tarjeta"><div class="emoji">🛡️</div><h3>Sin publicidad</h3><p>Bloquea anuncios y rastreadores, incluidos los de YouTube. Las páginas cargan más rápido y gastás menos datos.</p></div>
+      <div class="tarjeta"><div class="emoji">🚨</div><h3>Escudo contra estafas</h3><p>Si entrás a una página trucha que se hace pasar por un banco, Mercado Pago, ANSES o el correo, te frena con una pantalla roja.</p></div>
+      <div class="tarjeta"><div class="emoji">📷</div><h3>Fotos limpias</h3><p>Antes de subir una foto le borra la ubicación GPS y los datos ocultos, como el identificador que meten Facebook e Instagram.</p></div>
+      <div class="tarjeta"><div class="emoji">⚠️</div><h3>Aviso en descargas peligrosas</h3><p>Si un sitio raro te quiere hacer bajar un programa o una app, te avisa antes de que lo abras.</p></div>
+      <div class="tarjeta"><div class="emoji">🕶️</div><h3>Modo incógnito</h3><p>Una ventana que al cerrarla borra todo: historial, cookies y sesiones.</p></div>
+      <div class="tarjeta"><div class="emoji">🌐</div><h3>Traductor privado</h3><p>Traduce páginas de otros idiomas al español en tu propia PC, sin mandar el texto a Google.</p></div>
+      <div class="tarjeta"><div class="emoji">🧒</div><h3>Modo chicos</h3><p>Con un tilde bloquea el contenido para adultos y fuerza la búsqueda segura.</p></div>
+      <div class="tarjeta"><div class="emoji">🔎</div><h3>Buscador privado</h3><p>Usa Brave Search por defecto y DuckDuckGo si lo preferís. No depende de Google ni de Microsoft.</p></div>
+      <div class="tarjeta"><div class="emoji">🎵</div><h3>Música en segundo plano</h3><p>En el celu YouTube sigue sonando con la pantalla apagada o mientras usás otra app.</p></div>
+      <div class="tarjeta"><div class="emoji">🔠</div><h3>Letra grande y modo lectura</h3><p>Para leer cómodo, sin cosas que distraigan y con la letra del tamaño que necesites.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="ancho capturas">
+    <figure><img src="assets/inicio.webp" alt="Pantalla de inicio de Patagonia Browser" loading="lazy" width="1366" height="768"><figcaption>La pantalla de inicio, con tus accesos de siempre</figcaption></figure>
+    <figure><img src="assets/traducida.webp" alt="Página traducida al español con Patagonia Browser" loading="lazy" width="1366" height="768"><figcaption>Una página en inglés traducida en la propia PC</figcaption></figure>
+  </div>
+</section>
+
+<section id="descargar" class="descargas">
+  <div class="ancho">
+    <div class="centro">
+      <h2>Descargalo gratis</h2>
+      <p class="intro">Elegí dónde lo vas a usar. La PC y el celu tienen las mismas funciones y el mismo número de versión.</p>
+    </div>
+    <div class="opciones">
+      <div class="opcion destacada">
+        <span class="tag">Recomendado para PC</span>
+        <h3>Windows · Microsoft Store</h3>
+        <p class="sub">La forma más fácil y segura en Windows 10 y 11. Se actualiza solo.</p>
+        <ol>
+          <li>Tocá el botón de abajo.</li>
+          <li>En la Store, tocá <strong>Obtener</strong>.</li>
+          <li>Listo, lo abrís desde el menú Inicio.</li>
+        </ol>
+        <a class="btn btn-principal" href="https://apps.microsoft.com/detail/9NWL1WDZFJMD" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.5 4.5v7H3zM11.5 4.4 21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.4z"/></svg>
+          Abrir en Microsoft Store
+        </a>
+      </div>
+      <div class="opcion">
+        <span class="tag">Celular</span>
+        <h3>Android · APK</h3>
+        <p class="sub">Para celulares Android. Pesa unos 100 MB.</p>
+        <ol>
+          <li>Descargá el archivo desde el celu.</li>
+          <li>Abrilo. Si te pregunta, permití <strong>instalar apps desconocidas</strong> para tu navegador.</li>
+          <li>Tocá <strong>Instalar</strong>. Las próximas versiones te avisan solas.</li>
+        </ol>
+        <a class="btn btn-principal" href="https://github.com/Roma-69/Patagonia-Browser/releases/download/movil-v1.4.0/Patagonia-Android-1.4.0-Publicacion.apk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Descargar para Android
+        </a>
+      </div>
+      <div class="opcion">
+        <span class="tag">PC sin Store</span>
+        <h3>Windows · Instalador</h3>
+        <p class="sub">Para quien no usa la Store. Pesa unos 190 MB.</p>
+        <ol>
+          <li>Descargá el instalador y abrilo.</li>
+          <li>Si Windows muestra «Windows protegió su PC», tocá <strong>Más información</strong> y después <strong>Ejecutar de todas formas</strong>.</li>
+          <li>Se instala solo y busca actualizaciones por su cuenta.</li>
+        </ol>
+        <a class="btn btn-secundario" href="https://github.com/Roma-69/Patagonia-Browser/releases/download/v1.4.0/Patagonia-Browser-Setup.exe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Descargar instalador (.exe)
+        </a>
+      </div>
+    </div>
+    <p class="nota">¿Querés ver el código o las versiones anteriores? Está todo en <a href="https://github.com/Roma-69/Patagonia-Browser" rel="noopener">GitHub</a>.</p>
+  </div>
+</section>
+
+<section id="principios">
+  <div class="ancho">
+    <h2>Cómo hacemos las cosas</h2>
+    <p class="intro">Todo lo que sale de Patagonia Labs sigue las mismas reglas.</p>
+    <div class="principios">
+      <div class="principio"><strong>Vos tenés el control</strong><span>Nada se activa a tus espaldas.</span></div>
+      <div class="principio"><strong>Tu privacidad no se vende</strong><span>Sin cuentas obligatorias, sin rastreo, sin vender datos.</span></div>
+      <div class="principio"><strong>Cada clic importa</strong><span>Menos pasos, menos vueltas.</span></div>
+      <div class="principio"><strong>Calidad antes que cantidad</strong><span>Mejor pocas cosas bien hechas.</span></div>
+      <div class="principio"><strong>La tecnología se adapta a vos</strong><span>Pensado para gente común, no para técnicos.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="labs" style="padding-top:20px">
+  <div class="ancho labs">
+    <div>
+      <h2>Patagonia Labs</h2>
+      <p>Patagonia Labs es el taller de Christian Ariel Williams, desde la Patagonia argentina. Hacemos programas pensados para la familia y para la gente que quiere usar la tecnología sin que la usen a ella.</p>
+      <p>Patagonia Browser es el primero. El código es abierto (licencia MIT) y cualquiera lo puede revisar en GitHub. El nombre, el ícono del árbol bandera y la imagen de Patagonia son marca reservada.</p>
+    </div>
+    <div class="proximos">
+      <div class="emoji">🌄</div>
+      <h3>Hay más en camino</h3>
+      <p>Estamos trabajando en nuevas herramientas de la familia Patagonia. Las vamos a mostrar acá cuando estén listas.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="ancho">
+    <span>© 2026 Christian Ariel Williams · Patagonia Labs</span>
+    <span class="sinrastreo">🔒 Esta página no usa cookies ni rastreadores.</span>
+    <span><a href="https://github.com/Roma-69" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
